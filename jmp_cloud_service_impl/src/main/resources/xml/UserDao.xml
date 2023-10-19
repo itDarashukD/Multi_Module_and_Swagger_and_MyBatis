@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.cloud.repository.UserDao">
+
+  <select id="getAllUsers" resultMap="resultUser">
+    SELECT * FROM public."user"
+  </select>
+
+  <select id="getUserById" resultMap="resultUser">
+    SELECT * FROM public."user" WHERE id = #{id}
+  </select>
+
+  <resultMap id="resultUser" type="com.dto.example.model.User">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="surname" column="surname"/>
+    <result property="birthDate" column="birthdate"/>
+  </resultMap>
+
+  <insert id="createUser" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO public."user" (name, surname, birthdate)
+    VALUES (#{name}, #{surname}, #{birthDate})
+  </insert>
+
+  <update id="updateUser" useGeneratedKeys="true" keyProperty="id">
+    Update public."user" set name = #{name}, surname= #{surname}, birthdate= #{birthDate} where id=#{id}
+  </update>
+
+  <delete id="deleteUser">
+    Delete from public."user" where id= #{id}
+  </delete>
+
+  <select id="isExistsById">
+    SELECT EXISTS(SELECT * FROM public."user" WHERE id = #{id})
+  </select>
+
+</mapper>

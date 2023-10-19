@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.cloud.repository.SubscriptionDao">
+
+  <select id="getAllSubscriptions" resultMap="resultSubscription">
+    select
+    ss.id as id,
+    ss.user_id,
+    ss.start_date as start_date,
+    u.id as id,
+    u.name as name,
+    u.surname as surname,
+    u.birthdate as birthDate
+    FROM public."subscription" AS ss LEFT JOIN public."user" AS u ON ss.user_id = u.id WHERE
+    ss.id = #{id}
+  </select>
+
+
+  <select id="getSubscription" resultMap="resultSubscription">
+    select
+    ss.id as id,
+    ss.user_id,
+    ss.start_date as start_date,
+    u.id as id,
+    u.name as name,
+    u.surname as surname,
+    u.birthdate as birthDate
+    FROM public."subscription" AS ss LEFT JOIN public."user" AS u ON ss.user_id = u.id WHERE
+    ss.id = #{id}
+  </select>
+
+  <resultMap id="resultSubscription" type="com.dto.example.model.Subscription">
+    <id property="id" column="id"/>
+    <result property="startDate" column="start_date"/>
+    <association property="user" resultMap="resultUser"/>
+  </resultMap>
+
+  <resultMap id="resultUser" type="com.dto.example.model.User">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="surname" column="surname"/>
+    <result property="birthDate" column="birthdate"/>
+  </resultMap>
+
+  <!--    <resultMap id="Subscription" type="com.example.dto.model.Subscription">-->
+  <!--      <id property="id" column="subscription_id"/>-->
+  <!--      <result property="startDate" column="start_date"/>-->
+  <!--      <association property="user" javaType="com.example.dto.model.User" >-->
+  <!--        <id property="id" column="id"/>-->
+  <!--        <result property="name" column="name"/>-->
+  <!--        <result property="surname" column="surname"/>-->
+  <!--        <result property="birthDate" column="birthdate"/>-->
+  <!--      </association>-->
+  <!--    </resultMap>-->
+
+  <insert id="createSubscription" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO public."subscription" (user_id, start_date)
+    VALUES (#{user.id}, #{startDate})
+  </insert>
+
+  <update id="updateSubscription" useGeneratedKeys="true" keyProperty="id">
+    Update public."subscription" set user_id= #{user.id}, start_date= #{startDate}
+    where id=#{id}
+  </update>
+
+  <delete id="deleteSubscription">
+    Delete from public."subscription"
+    where id=#{id}
+  </delete>
+
+  <select id="isExistsById">
+    SELECT EXISTS(SELECT * FROM public."subscription" WHERE id = #{id})
+  </select>
+
+</mapper>

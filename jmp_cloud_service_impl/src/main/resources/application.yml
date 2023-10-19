@@ -1,0 +1,30 @@
+server:
+  port : 8081
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name : org.postgresql.Driver
+    url : jdbc:postgresql://localhost:5432/user_subscription
+    username : postgres
+    password : root
+
+  sql:
+    init:
+      mode : always
+#for swagger compatibility with SB version :
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+mybatis:
+  config-location: "classpath:mybatis-config.xml"
+
+
+server:
+  port : 8084
